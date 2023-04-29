@@ -1,24 +1,20 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+const baseUrl = "https://api.themoviedb.org/3";
+const imageUrl = "https://image.tmdb.org/t/p/w780";
+const apiKey = "5cd249d4f26bf03481d34df30898c03e";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
+const movieList = document.querySelector("#movie-list");
+
+const cardTemplate = (imagePath, title, releaseDate, voteAverage) => {
+  const relseaseDateFormatted = new Date(releaseDate).toLocaleDateString();
+
+  return `
+  <div class='card'>
+    <img src='${imageUrl}${imagePath}'/>
+    <div class='description'>
+    <h2 class='title'>${title}</h2>
+    <p class='release-date'>Data: ${relseaseDateFormatted}</p>
+    <p class='vote-average'>Pontuação: ${voteAverage}</p>
     </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
   </div>
-`
-
-setupCounter(document.querySelector('#counter'))
+  `;
+};
