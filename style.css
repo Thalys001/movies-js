@@ -5,7 +5,47 @@
 body {
   display: flex;
   justify-content: center;
-  font-family: "Roboto";
+  font-family: system-ui;
   background-color: #212121;
   margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 24px;
+  max-width: 1366px;
+}
+
+.card {
+  flex: 400px;
+  background-color: antiquewhite;
+  /* background-color: #ffffff; */
+  border-radius: 16px;
+}
+
+.card::hover {
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 16px;
+  }
+}
+
+.card img {
+  width: 100%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.card .description {
+  padding: 10px 24px;
+}
+
+.card .release-date,
+.card .vote-average {
+  margin: 0;
+  color; #777777;
 }

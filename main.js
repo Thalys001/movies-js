@@ -4,14 +4,21 @@ const apiKey = "5cd249d4f26bf03481d34df30898c03e";
 
 const movieList = document.querySelector("#movie-list");
 
-const cardTemplate = (imagePath, title, overview, releaseDate, voteAverage, popularity) => {
+const cardTemplate = (
+  imagePath,
+  original_title,
+  overview,
+  releaseDate,
+  voteAverage,
+  popularity
+) => {
   const relseaseDateFormatted = new Date(releaseDate).toLocaleDateString();
 
   return `
   <div class='card'>
     <img src='${imageUrl}${imagePath}'/>
     <div class='description'>
-    <h2 class='title'>${title}</h2>
+    <h2 class='title'>${original_title}</h2>
     <h3 class='overview'>${overview}</h3>
     <p class='release-date'>Data: ${relseaseDateFormatted}</p>
     <p class='vote-average'>Pontuação: ${voteAverage}</p>
@@ -23,20 +30,19 @@ const cardTemplate = (imagePath, title, overview, releaseDate, voteAverage, popu
 
 const getPopularMovies = async () => {
   const response = await fetch(
-    `${baseUrl}/movie/popular?api_key=${apiKey}&language=pt-BR&region=BR&page=1`
+    `${baseUrl}/movie/popular?api_key=${apiKey}&language=pt-BR&region=BR&page=`
   );
 
   const data = await response.json();
 
-  data.results.forEach((item)=>{
+  data.results.forEach((item) => {
     const template = cardTemplate(
       item.poster_path,
-      item.title,
+      item.original_title,
       item.overview,
       item.release_date,
       item.vote_average,
       item.popularity
-
     );
     movieList.innerHTML += template;
   });
