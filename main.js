@@ -1,51 +1,44 @@
-const baseUrl = "https://api.themoviedb.org/3";
-const imageUrl = "https://image.tmdb.org/t/p/w780";
-const apiKey = "5cd249d4f26bf03481d34df30898c03e";
+const API_BASE_URL = "https://api.themoviedb.org/3";
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";
+const API_KEY = "5cd249d4f26bf03481d34df30898c03e";
 
-const movieList = document.querySelector("#movie-list");
+const movieListElement = document.querySelector("#movie-list");
 
-const cardTemplate = (
-  imagePath,
-  original_title,
-  overview,
-  releaseDate,
-  voteAverage,
-  popularity
-) => {
-  const relseaseDateFormatted = new Date(releaseDate).toLocaleDateString();
+function createCardElement(movie) {
+  const releaseDate = new Date(movie.release_date).toLocaleDateString();
 
   return `
-  <div class='card'>
-    <img src='${imageUrl}${imagePath}'/>
-    <div class='description'>
-    <h2 class='title'>${original_title}</h2>
-    <h3 class='overview'>${overview}</h3>
-    <p class='release-date'>Data: ${relseaseDateFormatted}</p>
-    <p class='vote-average'>Pontuação: ${voteAverage}</p>
-    <p class='popularity'>Popularidade: ${popularity}</p>
+    <div class='card'>
+      <img src='${IMAGE_BASE_URL}${movie.poster_path}'/>
+      <div class='description'>
+        <h2 class='title'>${movie.title}</h2>
+        <h3 class='overview'>${movie.overview}</h3>
+        <p class='release-date'>Data: ${releaseDate}</p>
+        <p class='vote-average'>Pontuação: ${movie.vote_average}</p>
+        <p class='popularity'>Popularidade: ${movie.popularity}</p>
+      </div>
     </div>
-  </div>
   `;
-};
+}
 
-const getPopularMovies = async () => {
-  const response = await fetch(
-    `${baseUrl}/movie/popular?api_key=${apiKey}&language=pt-BR&region=BR&page=`
-  );
+async function fetchPopularMovies() {
+  const url = new URL(`${API_BASE_URL}/movie/popular`);
+  url.searchParams.set("api_key", API_KEY);
+  url.searchParams.set("language", "pt-BR");
+  url.searchParams.set("region", "BR");
 
-  const data = await response.json();
+  const response = await fetch(url);
+  const { results: movies } = await response.json();
 
-  data.results.forEach((item) => {
-    const template = cardTemplate(
-      item.poster_path,
-      item.original_title,
-      item.overview,
-      item.release_date,
-      item.vote_average,
-      item.popularity
-    );
-    movieList.innerHTML += template;
-  });
-};
+  return movies;
+}
 
-getPopularMovies();
+async function renderPopularMovies() {
+  const movies = await fetchPopularMovies();
+
+  const cardsHtml = movies.map((movie) => createCardElement(movie)).join("");
+
+  movieListElement.innerHTML = cardsHtml;
+}
+
+renderPopularMovies();

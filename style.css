@@ -25,9 +25,6 @@ body {
   border-radius: 16px;
 }
 
-.card::hover {
-}
-
 @media (max-width: 600px) {
   .container {
     padding: 16px;
